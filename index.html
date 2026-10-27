@@ -513,7 +513,10 @@ function show(name) {
   try { localStorage.setItem('calc-tab', name); } catch (e) {}
 }
 document.querySelectorAll('.tab').forEach(b => b.addEventListener('click', () => show(b.dataset.tab)));
-window.addEventListener('hashchange', () => show(location.hash.slice(1)));
+// the hash names a panel id, so the browser would jump down to it; keep the title and tabs in view instead
+const toTop = () => setTimeout(() => window.scrollTo(0, 0), 0);
+window.addEventListener('hashchange', () => { show(location.hash.slice(1)); toTop(); });
+window.addEventListener('load', toTop);
 Object.values(calc).forEach(f => f());
 let start = location.hash.slice(1);
 if (!calc[start]) { try { start = localStorage.getItem('calc-tab') || 'loan'; } catch (e) { start = 'loan'; } }
