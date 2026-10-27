@@ -508,7 +508,8 @@ function show(name) {
   document.querySelectorAll('.tab').forEach(b => b.setAttribute('aria-selected', b.dataset.tab === name ? 'true' : 'false'));
   document.querySelectorAll('.panel').forEach(p => p.hidden = p.id !== name);
   const on = document.querySelector(`.tab[data-tab="${name}"]`);
-  if (on) on.scrollIntoView({ block: 'nearest', inline: 'center' });
+  const strip = document.querySelector('.tabs');
+  if (on && strip) strip.scrollLeft = on.offsetLeft - strip.offsetLeft - (strip.clientWidth - on.offsetWidth) / 2;
   try { localStorage.setItem('calc-tab', name); } catch (e) {}
 }
 document.querySelectorAll('.tab').forEach(b => b.addEventListener('click', () => show(b.dataset.tab)));
